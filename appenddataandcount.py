@@ -1,4 +1,4 @@
-# I. Append Data and Count Number of Lines, Words and Characters
+filename = "sample_data.txt"# I. Append Data and Count Number of Lines, Words and Characters
 file = open(filename, "a")
 file.write("Appending a new line for analysis tasks.\n")
 file.close()
