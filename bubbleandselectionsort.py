@@ -22,8 +22,16 @@ def selection_sort(arr):
         a[i], a[min_idx] = a[min_idx], a[i]
     return a
 
-# Testing the sorting implementations
-test_array = [64, 25, 12, 22, 11]
+# --- User Input Section ---
+
+# Get numbers separated by spaces from the user
+user_input = input("Enter the numbers you want to sort (separated by spaces): ")
+
+# Convert the string input into a list of integers
+test_array = [int(x) for x in user_input.split()]
+
+# --- Testing the sorting implementations ---
+print("\n--- Results ---")
 print("Original Array:", test_array)
 print("Bubble Sorted:", bubble_sort(test_array))
 print("Selection Sorted:", selection_sort(test_array))
