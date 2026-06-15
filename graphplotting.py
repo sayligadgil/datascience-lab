@@ -1,34 +1,45 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
-iris = sns.load_dataset("iris")
+# Load dataset (Replace with 'titanic.csv' or examiner's file)
+df = sns.load_dataset("iris")
 
-# A. X–Y GRAPH (Line Plot)
+# Pick numerical columns dynamically for plotting
+num_cols = df.select_dtypes(include=["number"]).columns
+cat_cols = df.select_dtypes(include=["object", "category"]).columns
 
-iris_sorted = iris.sort_values(by="sepal_length")
-sns.lineplot(data=iris_sorted, x="sepal_length", y="sepal_width")
-plt.title("A. X-Y Line Graph: Sepal Length vs Width Trend")
-plt.xlabel("Sepal Length (cm)")
-plt.ylabel("Sepal Width (cm)")
-plt.show()  
+# A. X–Y Graph (Line Plot)
+# Sort the dataframe by the X-axis variable so the line doesn't zigzag
+df_sorted = df.sort_values(by=num_cols[0])
 
-# B. SCATTER PLOT
-sns.scatterplot(data=iris, x="petal_length", y="petal_width", hue="species")
-plt.title("B. Scatter Plot: Petal Length vs Width Clustered by Species")
-plt.xlabel("Petal Length (cm)")
-plt.ylabel("Petal Width (cm)")
-plt.show()  
+plt.figure(figsize=(6, 4))
+plt.plot(
+    df_sorted[num_cols[0]], df_sorted[num_cols[1]], color="blue", marker="o"
+)
+plt.title(f"X-Y Graph: {num_cols[0]} vs {num_cols[1]}")
+plt.xlabel(num_cols[0])
+plt.ylabel(num_cols[1])
+plt.show()
 
-# C. BAR CHART
-sns.barplot(data=iris, x="species", y="petal_length")
-plt.title("C. Bar Chart: Average Petal Length for Each Species")
-plt.xlabel("Species")
-plt.ylabel("Average Petal Length (cm)")
-plt.show() 
+# B. Scatter Plot
+plt.figure(figsize=(6, 4))
+plt.scatter(df[num_cols[0]], df[num_cols[1]], color="purple", alpha=0.7)
+plt.title(f"Scatter Plot: {num_cols[0]} vs {num_cols[1]}")
+plt.xlabel(num_cols[0])
+plt.ylabel(num_cols[1])
+plt.show()
 
-# D. PIE CHART
+# C. Bar Chart (Aggregated counts of a categorical variable)
+plt.figure(figsize=(6, 4))
+df[cat_cols[0]].value_counts().plot(kind="bar", color="orange")
+plt.title(f"Bar Chart of {cat_cols[0]}")
+plt.ylabel("Count")
+plt.show()
 
-counts = iris["species"].value_counts()
-plt.pie(counts, labels=counts.index, autopct="%1.1f%%")
-plt.title("D. Pie Chart: Proportional Breakdown of Species")
-plt.show()  
+# D. Pie Chart
+plt.figure(figsize=(6, 4))
+df[cat_cols[0]].value_counts().plot(kind="pie", autopct="%1.1f%%")
+plt.title(f"Pie Chart of {cat_cols[0]}")
+plt.ylabel("")  # Hides the default sidebar label
+plt.show()
